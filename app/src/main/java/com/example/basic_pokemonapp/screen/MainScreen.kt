@@ -24,38 +24,38 @@ import com.example.basic_pokemonapp.viewmodel.PokemonViewModel
 
 @Composable
 fun MainScreen(
-    onPokemonClick: (String) -> Unit,
-    viewModel: PokemonViewModel = hiltViewModel()
+	onPokemonClick: (String) -> Unit,
+	viewModel: PokemonViewModel = hiltViewModel()
 ) {
-    val lazyPagingItems = viewModel.pokemonList.collectAsLazyPagingItems()
-
-    LazyColumn {
-        items(count = lazyPagingItems.itemCount,
-            key = lazyPagingItems.itemKey { it.url },
-            contentType = lazyPagingItems.itemContentType { "contentType" }) { index ->
-            lazyPagingItems[index]?.let {item ->
-                Card(
-                    elevation = CardDefaults.cardElevation(8.dp),
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth()
-                ) {
-                    Row(
-                       verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(8.dp)
-                    ){
-                        Column{
-                            Text("포켓몬: ${item.name}")
-                            Text(text = item.url, Modifier.alpha(0.4f))
-                            Spacer(modifier = Modifier.size(16.dp))
-                            Button(onClick = {onPokemonClick(item.url)}) {
-                                Text("보기")
-                            }
-                        }
-                    }
-                }
-            }
-
-        }
-    }
+	val lazyPagingItems = viewModel.pokemonList.collectAsLazyPagingItems()
+	
+	// 포켓몬 목록
+	LazyColumn {
+		items(
+			count = lazyPagingItems.itemCount,
+			key = lazyPagingItems.itemKey { it.url },
+		) { index ->
+			lazyPagingItems[index]?.let { item ->
+				Card(
+					elevation = CardDefaults.cardElevation(8.dp),
+					modifier = Modifier
+						.padding(8.dp)
+						.fillMaxWidth()
+				) {
+					Row(
+						verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(8.dp)
+					) {
+						Column {
+							Text("포켓몬: ${item.name}")
+							Text(text = item.url, Modifier.alpha(0.4f))
+							Spacer(modifier = Modifier.size(16.dp))
+							Button(onClick = { onPokemonClick(item.url) }) {
+								Text("보기")
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }
